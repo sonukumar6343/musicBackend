@@ -28,8 +28,8 @@ router.post('/microsoft/callback',
 // router.post("/login", login);
 // router.post("/send-otp", sendOtp);
 // router.post("/verify-otp", verifyOtp);
-// router.post("/login",sessionMiddleware, login);
-router.post("/login", shortcutWalalogin);
+router.post("/login",sessionMiddleware, login);
+// router.post("/login", shortcutWalalogin);
 
 router.post("/verify-otp", sessionMiddleware,verifyOtp);
 router.post("/change-password", changePassword);
