@@ -74,15 +74,26 @@ import { sendOtpEmail } from "../controller/loginController.js"; // adjust your 
 export const registerStudent = async (req, res) => {
   try {
     const formatData = formatUserData(req.body);
+    console.log("formatData is:",formatData);
 
-    if (!formatData.email || !formatData.mobileNumber,!formatData.password.trim()) {
-      return res.status(400).json({ error: "Email or mobile number and password are required" });
-    }
+    // if (!formatData.email || !formatData.mobileNumber,!formatData.password.trim()) {
+    //   return res.status(400).json({ error: "Email or mobile number and password are required" });
+    // }
 
-    // Check for duplicate
-    const existingUser = await User.findOne({
-      $or: [{ email }, { mobileNumber }],
-    });
+    // // Check for duplicate
+    // const existingUser = await User.findOne({
+    //   $or: [{ email }, { mobileNumber }],
+    // });
+
+    if (!formatData.email || !formatData.mobileNumber || !formatData.password.trim()) {
+  return res.status(400).json({ error: "Email or mobile number and password are required" });
+}
+
+const existingUser = await User.findOne({
+  $or: [{ email: formatData.email }, { mobileNumber: formatData.mobileNumber }],
+});
+
+    console.log("existing user is :",existingUser);
 
     if (existingUser && existingUser.role!== 'demostudent') {
       const existing = existingUser;
@@ -102,6 +113,7 @@ export const registerStudent = async (req, res) => {
       otp,
       verified: false
     });
+    console.log("otp is:",otp);
 
     // Send OTP to email
     await sendOtpEmail(formatData.email, otp);
@@ -213,8 +225,11 @@ export const verifyStudentOtp = async (req, res) => {
     // Mark OTP as verified
     otpRecord.verified = true;
     await otpRecord.save();
-    const hashPass = bcrypt.hash(formatData.password, 10)
-    const user = await User.findOneAndUpdate(
+
+    // Hash the password
+const hashPass = await bcrypt.hash(formatData.password, 10);
+
+const user = await User.findOneAndUpdate(
   { email: formatData.email },
   {
     $set: {
@@ -228,10 +243,30 @@ export const verifyStudentOtp = async (req, res) => {
     }
   },
   {
-    new: true,    
-    upsert: true,  
+    new: true,
+    upsert: true,
   }
 );
+
+    
+//     const user = await User.findOneAndUpdate(
+//   { email: formatData.email },
+//   {
+//     $set: {
+//       email: formatData.email,
+//       name: formatData.name,
+//       mobileNumber: formatData.mobileNumber,
+//       password: formatData.password,
+//       branch: formatData.branch,
+//       mode: formatData.mode,
+//       role: 'student'
+//     }
+//   },
+//   {
+//     new: true,    
+//     upsert: true,  
+//   }
+// );
 
     
     // Create student

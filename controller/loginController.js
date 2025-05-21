@@ -14,6 +14,9 @@ import {transporter} from "../utils/emailTransporter.js"
 export const shortcutWalalogin = async (req, res) => {
   try {
     const { email, mobileNumber, password } = req.body;
+    console.log("email is:",email);
+     console.log("password is:",password);
+      
 
     if ((!email && !mobileNumber) || !password?.trim()) {
       return res
@@ -25,6 +28,7 @@ export const shortcutWalalogin = async (req, res) => {
 
     // Normalize email
     const normalizedEmail = email?.trim().toLowerCase();
+    console.log("normalizedEmail is",normalizedEmail);
 
     const options = {
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days
@@ -307,6 +311,7 @@ export const sendOtpEmail = async (email, otp) => {
 export const login = async (req, res) => {
   try {
     const { email, mobileNumber, password } = req.body;
+    console.log("password is:",password);
     if ((!email && !mobileNumber) || !password?.trim()) {
       return res
         .status(400)
