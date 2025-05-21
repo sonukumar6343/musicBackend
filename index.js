@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import "./model/userModel.js"; 
+import sessionMiddleware from "./config/sessionConfig.js"
 // import studentRoutes from "./routes/studentRoutes.js";
 // import courseRoutes from "./routes/courseRoutes.js";
 // import teacherRoutes from "./routes/teacherRoutes.js";
@@ -35,6 +36,8 @@ app.use(cors({
     origin: ['http://localhost:3000', 'http://localhost:5173'],  // ✅ Must match your frontend origin
     credentials: true                 // ✅ Allow credential(cookies, auth headers)
 }));
+app.use(sessionMiddleware); // ✅ Apply globally
+
 
 //hello world
 
