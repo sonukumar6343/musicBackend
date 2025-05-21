@@ -60,7 +60,7 @@ app.use(cors({
 app.use('/api/v1/time-slots',lazyLoadRoute('./routes/timeSlotRoutes.js'))
 app.use("/api/v1/demo-bookings",lazyLoadRoute('./routes/demoBookingRoutes.js') );
 app.use("/api/v1/demo-students",lazyLoadRoute("./routes/demoStudentRoutes.js"));
-app.use("/api/auth", lazyLoadRoute("./routes/loginRoutes.js"));
+app.use("/api/v1/auth", lazyLoadRoute("./routes/loginRoutes.js"));
 app.use("/api/v1/student", lazyLoadRoute("./routes/studentRoutes.js"));
 app.use("/api/v1/teacher", lazyLoadRoute("./routes/teacherRoutes.js"));
 app.use("/api/v1/course", lazyLoadRoute("./routes/courseRoutes.js"));
